@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EssaysController } from './essays.controller';
-import { EssaysService } from './essays.service';
-import { OpenAIService } from '../openai/openai.service';
-import { Essay } from './essay.entity';
+import { EssaysController } from './../essays/essays.controller';
+import { EssaysService } from './../essays/essays.service';
+import { OpenAIService } from './openai.service';
+import { Essay } from './../essays/essay.entity';
 import { AppModule } from './../app.module';  
 import { INestApplication } from '@nestjs/common';
 
@@ -99,11 +99,11 @@ describe('EssaysController', () => {
     });
 
     it('should handle errors during essay generation', async () => {
-      const topic = 'Test Topic';
-      jest.spyOn(openAIService, 'generateEssay').mockRejectedValue(new Error('Essay generation failed'));
-    
-      await expect(controller.generateEssay(topic)).rejects.toThrow('Essay generation failed');
-    });
+        const topic = 'Test Topic';
+        jest.spyOn(openAIService, 'generateEssay').mockRejectedValue(new Error('Essay generation failed'));
+      
+        await expect(controller.generateEssay(topic)).rejects.toThrow('Essay generation failed');
+      });
   });
 });
 });

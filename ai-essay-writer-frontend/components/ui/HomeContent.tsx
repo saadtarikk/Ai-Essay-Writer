@@ -1,11 +1,13 @@
 'use client'
 
-import { motion } from "framer-motion"
+import { motion, AnimatePresence } from "framer-motion"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { LogoTicker } from "@/components/ui/LogoTicker"
-import { useState,useEffect } from "react"
+import { useState, useEffect } from "react"
+import { X } from "lucide-react"
+import { createEssay } from '@/lib/api';
 
 export function HomeContent() {
   const [topic, setTopic] = useState('');
@@ -13,9 +15,7 @@ export function HomeContent() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isClient, setIsClient] = useState(false);
-
-
-  
+  const [showEssayCard, setShowEssayCard] = useState(false);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -46,6 +46,10 @@ export function HomeContent() {
       const data = await response.json();
       console.log('Essay data:', data);
       setEssay(data.essay);
+      setShowEssayCard(true);
+
+      // Save the generated essay
+      await createEssay({ title: topic, content: data.essay, topic });
     } catch (err) {
       console.error('Error generating essay:', err);
       setError('Failed to generate essay. Please try again.');
@@ -53,7 +57,6 @@ export function HomeContent() {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <motion.div 
@@ -93,6 +96,35 @@ export function HomeContent() {
         </motion.div>
       </motion.header>
 
+      <AnimatePresence>
+        {showEssayCard && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+          >
+            <Card className="w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+              <CardHeader className="flex flex-row items-center justify-between">
+                <CardTitle>Generated Essay</CardTitle>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowEssayCard(false)}
+                >
+                  <X className="h-4 w-4" />
+                </Button>
+              </CardHeader>
+              <CardContent className="prose max-w-none">
+                {essay.split('\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
+              </CardContent>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {essay && (
         <motion.section 
           className="py-16 bg-secondary/30"
@@ -110,8 +142,6 @@ export function HomeContent() {
           </div>
         </motion.section>
       )}
-
-     
 
       <motion.section 
         className="py-16 bg-secondary/30"

@@ -3,8 +3,11 @@
 import React, { useEffect, useState } from 'react';
 import { getEssays } from '@/lib/api';
 import { Essay } from '@/types';
+import { Citation } from '@/components/ui/Citation';
+import EssayList from '@/components/ui/EssayList';
 
-const EssaysPage = () => {
+
+/*const EssaysPage = () => {
   const [essays, setEssays] = useState<Essay[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,7 +41,20 @@ const EssaysPage = () => {
             <li key={essay.id}>{essay.title}</li>
           ))}
         </ul>
+        
       )}
+      <Citation />
+    </div>
+  );
+};
+
+*/
+
+const EssaysPage = () => {
+  return (
+    <div>
+      <EssayList />
+      <Citation />
     </div>
   );
 };

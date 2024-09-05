@@ -33,6 +33,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.31",
     "lucide-react": "^0.436.0",
+    "nestjs-rate-limiter": "^3.1.0",
     "next": "14.2.7",
     "next-auth": "^4.24.7",
     "next-themes": "^0.3.0",

@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { User, Essay, CreateUserDto } from '../types';
+
+
 const API_URL = 'http://localhost:3000';
 // Create an axios instance
 const api = axios.create({
@@ -117,3 +119,25 @@ export const generateEssay = async (topic: string): Promise<string> => {
     throw error;
   }
 };
+
+import { NextResponse } from 'next/server';
+
+export async function POST(request: Request) {
+  const { source, style } = await request.json();
+  
+  // TODO: Implement actual citation generation logic
+  const citation = `Generated citation for "${source}" in ${style} style`;
+
+  return NextResponse.json({ citation });
+}
+
+export const createEssay = async (essayData: Partial<Essay>): Promise<Essay> => {
+  try {
+    const response = await api.post('/essays', essayData);
+    return response.data;
+  } catch (error) {
+    throw new Error('Failed to create essay');
+  }
+};
+
+// Make sure all these functions are exported
