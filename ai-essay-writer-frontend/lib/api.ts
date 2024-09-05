@@ -38,6 +38,7 @@ export const getUserById = async (id: number): Promise<User> => {
 
 export const createUser = async (userData: CreateUserDto): Promise<User> => {
   try {
+    console.log('Creating user with data:', userData);
     const response = await api.post('/users', userData);
     return response.data;
   } catch (error) {
@@ -58,15 +59,26 @@ export const deleteUser = async (id: number): Promise<void> => {
   }
 };
 
-export const login = async (email: string, password: string): Promise<{ access_token: string }> => {
-  try {
-    const response = await api.post('/auth/login', { email, password });
-    const { access_token } = response.data;
-    localStorage.setItem('token', access_token);
-    return { access_token };
-  } catch (error) {
-    throw new Error('Login failed');
+export const login = async (email: string, password: string) => {
+  console.log('Attempting to sign in with:', { email });
+  const response = await fetch('http://localhost:3000/auth/login', {
+    
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ email, password }),
+    
+  });
+  console.log('Attempting to sign in with:', { email });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Login failed');
   }
+
+  return response.json();
+  console.log('Attempting to sign in with:', { email });
 };
 export const getEssays = async (): Promise<Essay[]> => {
   try {
@@ -81,5 +93,27 @@ export const deleteEssay = async (id: number): Promise<void> => {
     await api.delete(`/essays/${id}`);
   } catch (error) {
     throw new Error(`Failed to delete essay with id ${id}`);
+  }
+};
+
+export const generateEssay = async (topic: string): Promise<string> => {
+  console.log('generateEssay called with topic:', topic);
+  try {
+    const response = await fetch('http://localhost:3000/essays/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ topic }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to generate essay');
+    }
+    const data = await response.json();
+    console.log('Essay generation response:', data);
+    return data.essay;
+  } catch (error) {
+    console.error('Error generating essay:', error);
+    throw error;
   }
 };

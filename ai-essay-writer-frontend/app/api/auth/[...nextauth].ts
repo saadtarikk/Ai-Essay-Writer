@@ -19,13 +19,19 @@ export default NextAuth({
       tenantId: process.env.AZURE_AD_TENANT_ID,
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
-  session: {
-    jwt: true,
+    callbacks: {
+    session: ({ session, token }) => ({
+      ...session,
+      user: {
+        ...session.user,
+        id: token.sub,
+      },
+    }),
   },
-  jwt: {
-    secret: process.env.JWT_SECRET,
-  },
+
+    jwt: {
+      secret: process.env.NEXTAUTH_SECRET,
+    },  
   pages: {
     signIn: '/login',
     signOut: '/logout',

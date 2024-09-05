@@ -12,14 +12,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { login } from '@/lib/api'
 
 
-const [email, setEmail] = useState('')
-const [password, setPassword] = useState('')
-const [error, setError] = useState<string | null>(null)
+
 
 
 export function LoginContent() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
 

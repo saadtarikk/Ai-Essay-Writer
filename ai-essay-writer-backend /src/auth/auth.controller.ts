@@ -7,8 +7,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req: any): Promise<{ access_token: string }> {
-    return this.authService.login(req.user);
-  }
-}
+@Post('login')
+async login(@Request() req: any): Promise<{ user: any; access_token: string }> {
+  const { access_token } = await this.authService.login(req.user);
+  return { user: req.user, access_token };
+}}
