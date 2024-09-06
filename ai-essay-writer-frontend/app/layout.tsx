@@ -1,43 +1,34 @@
-'use client'
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import "./globals.css";
+import { Providers } from "./providers";
 
-import { ThemeProvider } from "@/components/ui/theme-provider"
-import Navigation from "@/components/ui/Navigation"
-import { Providers } from "./providers"
-import "./globals.css"
-import { Footer } from "@/components/ui/Footer"
-import { motion, AnimatePresence } from "framer-motion"
-import { metadata } from './seo/metadata'
+const geistSans = localFont({
+  src: "./fonts/GeistVF.woff",
+  variable: "--font-geist-sans",
+  weight: "100 900",
+});
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
 
-
+export const metadata: Metadata = {
+  title: "AI Essay Writer",
+  description: "Write essays with AI assistance",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <Providers>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <div className="flex flex-col min-h-screen">
-              <Navigation />
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.main
-                  className="flex-grow"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {children}
-                </motion.main>
-              </AnimatePresence>
-              <Footer />
-            </div>
-          </ThemeProvider>
-        </Providers>
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Providers>{children}</Providers>
       </body>
     </html>
-  )
+  );
 }

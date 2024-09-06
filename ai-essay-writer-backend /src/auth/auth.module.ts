@@ -14,7 +14,6 @@ import { AuthController } from './auth.controller';
     UsersModule,
     ConfigModule,
     PassportModule,
-    AuthModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({

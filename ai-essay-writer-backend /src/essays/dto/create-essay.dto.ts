@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsString, IsNotEmpty } from 'class-validator';
 
 export class CreateEssayDto {
   @IsString()
@@ -12,4 +12,12 @@ export class CreateEssayDto {
   @IsString()
   @IsNotEmpty()
   topic: string;
+
+  @IsString()
+  @IsNotEmpty()
+  paperType: string;
+
+  @IsString()
+  @IsNotEmpty()
+  subjectArea: string;
 }

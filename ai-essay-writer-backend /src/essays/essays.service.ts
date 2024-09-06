@@ -13,9 +13,19 @@ export class EssaysService {
   ) {}
 
   async create(createEssayDto: CreateEssayDto, userId: number): Promise<Essay> {
-    const essay = plainToClass(Essay, createEssayDto);
-    essay.user = { id: userId } as any; // Assign the user ID
-    return this.essaysRepository.save(essay);
+    console.log('Creating essay with DTO:', createEssayDto);
+    console.log('User ID:', userId);
+    if (!userId) {
+      throw new Error('User ID is required to create an essay');
+    }
+    const essay = this.essaysRepository.create({
+      ...createEssayDto,
+      user: { id: userId }
+    });
+    console.log('Essay object before save:', essay);
+    const savedEssay = await this.essaysRepository.save(essay);
+    console.log('Saved essay:', savedEssay);
+    return savedEssay;
   }
 
   async findAll(userId: number): Promise<Essay[]> {

@@ -9,11 +9,17 @@ export class Essay {
   @Column()
   title: string;
 
-  @Column()
+  @Column('text')
   content: string;
 
   @Column()
   topic: string;
+
+  @Column()
+  paperType: string;
+
+  @Column()
+  subjectArea: string;
 
   @ManyToOne(() => User, user => user.essays)
   user: User;
